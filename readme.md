@@ -12,12 +12,12 @@
 
 # Requisitos funcionais
 
-1. O usuário deve poder criar uma conta como administrador
-2. O usuário deve se logar
-3. O usuário administrado pode cadastrar um livro com nome, autor, editoria e descrição
-4. O usuário administrador pode editar um livro
-5. O usuário administrador pode apagar um livro
-6. O usuário normal pode ver uma lista de livros cadastrados
-7. O usuário pode pesquisar pelo nome do livros
-8. O usuário pode pesquisar por autor
-9. O Usuário pode pesquisar por editora
+- [ ] O usuário deve poder criar uma conta como administrador
+- [ ] O usuário deve se logar
+- [ ] O usuário administrado pode cadastrar um livro com nome, autor, editoria e descrição
+- [ ] O usuário administrador pode editar um livro
+- [ ] O usuário administrador pode apagar um livro
+- [ ] O usuário normal pode ver uma lista de livros cadastrados
+- [ ] O usuário pode pesquisar pelo nome do livros
+- [ ] O usuário pode pesquisar por autor
+- [ ] O Usuário pode pesquisar por editora

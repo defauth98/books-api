@@ -1,0 +1,26 @@
+version: "2"
+services:
+  node:
+    image: "node:8"
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./:/home/node/app
+    expose:
+      - "3333"
+      - "8081"
+    command: "npm start"
+    networks:
+      - api
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: docker
+    networks: 
+     - api
+networks:
+  api: 
+    driver: bridge
