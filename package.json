@@ -4,11 +4,14 @@
   "main": "index.js",
   "author": "defauth98 <neto.daniribeiro@gmail.com>",
   "scripts": {
-    "start": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts"
+    "start": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
+    "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js"
   },
   "license": "MIT",
   "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
     "@types/express": "^4.17.9",
+    "@types/jsonwebtoken": "^8.5.0",
     "@typescript-eslint/eslint-plugin": "^4.9.0",
     "@typescript-eslint/parser": "^4.9.0",
     "eslint": "^7.14.0",
@@ -20,7 +23,12 @@
     "typescript": "^4.1.2"
   },
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "pg": "^8.5.1",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.2.29"
   }
 }

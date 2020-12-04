@@ -1,24 +1,28 @@
 version: "2"
 services:
   node:
-    image: "node:8"
+    image: "node:12"
     user: "node"
     working_dir: /home/node/app
     environment:
       - NODE_ENV=production
     volumes:
       - ./:/home/node/app
-    expose:
-      - "3333"
-      - "8081"
+    ports:
+      - 3333:3333
     command: "npm start"
+    depends_on: 
+     - db
     networks:
       - api
   db:
     image: postgres
     restart: always
+    ports: 
+     - 5432:5432
     environment:
       POSTGRES_PASSWORD: docker
+      POSTGRES_USER: docker
     networks: 
      - api
 networks:
