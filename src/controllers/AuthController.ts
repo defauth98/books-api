@@ -23,6 +23,21 @@ export default {
 
     const password_hash = await bcrypt.hash(password, 2);
 
-    return response.json({ email, password_hash, name });
+    const userRepository = getRepository(Users);
+
+    try {
+      const newUser = userRepository.create({
+        name,
+        email,
+        password: password_hash,
+      });
+
+      await userRepository.save(newUser);
+
+      return response.json(newUser);
+    } catch (err) {
+      console.log(err.message);
+      return response.send({ error: 'Erro ao tentar cadastrar um usuário' });
+    }
   },
 };

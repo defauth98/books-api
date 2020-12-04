@@ -2,14 +2,13 @@
   "type": "postgres",
   "host": "localhost",
   "port": 5432,
-  "username": "postgres",
+  "username": "docker",
   "password": "docker",
   "database": "books",
   "synchronize": true,
   "logging": false,
-  "entities": ["src/entity/**/*.ts"],
+  "entities": ["src/entities/*.ts"],
   "migrations": ["src/database/migrations/**/*.ts"],
-
   "cli": {
     "migrationsDir": "./src/database/migrations"
   }
