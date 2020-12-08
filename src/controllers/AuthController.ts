@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
-import 'dotenv/config';
+
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
@@ -32,12 +32,36 @@ export default {
         password: password_hash,
       });
 
-      await userRepository.save(newUser);
+      const savedUser = await userRepository.save(newUser);
 
-      return response.json(newUser);
-    } catch (err) {
-      console.log(err.message);
-      return response.send({ error: 'Erro ao tentar cadastrar um usuário' });
+      const token = generateToken(String(savedUser.id));
+
+      return response.json({ user: savedUser, token });
+    } catch (error) {
+      console.log(error.message);
+      return response.send({ error: error.message });
+    }
+  },
+
+  async login(request: Request, response: Response) {
+    const { email, password } = request.body;
+
+    const userRepository = getRepository(Users);
+
+    try {
+      const user = await userRepository.find({ email });
+
+      const userPassword = user[0].password;
+
+      const isValidPass = bcrypt.compare(userPassword, password);
+
+      if (isValidPass) {
+        const token = generateToken(String(user[0].id));
+
+        return response.json({ token });
+      }
+    } catch (error) {
+      return response.json({ error: error.message });
     }
   },
 };
