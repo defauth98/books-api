@@ -7,7 +7,7 @@
   "database": "books",
   "synchronize": true,
   "logging": false,
-  "entities": ["src/entities/*.ts"],
+  "entities": ["src/entities/**/*.ts"],
   "migrations": ["src/database/migrations/**/*.ts"],
   "cli": {
     "migrationsDir": "./src/database/migrations"

@@ -6,9 +6,5 @@ export default createConnection({
   username: 'docker',
   password: 'docker',
   database: 'books',
-  entities: ['src/entities/*.ts'],
-}).then((connection) => {
-  if (connection.isConnected) {
-    console.log('Banco de dados conectado');
-  }
+  entities: ['src/entities/**/*.ts'],
 });

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
+import 'dotenv/config';
 
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
@@ -21,6 +22,22 @@ export default {
   async create(request: Request, response: Response) {
     const { name, email, password } = request.body;
 
+    if (name.length < 2) {
+      return response.status(400).json({ message: 'Não foi informado o nome' });
+    }
+
+    if (email.length < 2) {
+      return response
+        .status(400)
+        .json({ message: 'Não foi informado o email' });
+    }
+
+    if (password.length < 2) {
+      return response
+        .status(400)
+        .json({ message: 'Não foi informado a senha' });
+    }
+
     const password_hash = await bcrypt.hash(password, 2);
 
     const userRepository = getRepository(Users);
@@ -38,8 +55,7 @@ export default {
 
       return response.json({ user: savedUser, token });
     } catch (error) {
-      console.log(error.message);
-      return response.send({ error: error.message });
+      return response.status(400).json({ error: error.message });
     }
   },
 
@@ -49,19 +65,23 @@ export default {
     const userRepository = getRepository(Users);
 
     try {
-      const user = await userRepository.find({ email });
+      const user = await userRepository.findOneOrFail({ email });
 
-      const userPassword = user[0].password;
+      const userPassword = user.password;
 
-      const isValidPass = bcrypt.compare(userPassword, password);
+      const isValidPass = await bcrypt.compare(password, userPassword);
 
-      if (isValidPass) {
-        const token = generateToken(String(user[0].id));
+      if (isValidPass === true) {
+        const token = generateToken(String(user.id));
 
-        return response.json({ token });
+        return response.json({ user, token });
+      } else {
+        return response
+          .status(400)
+          .json({ error: 'Não foi possível fazer o login' });
       }
     } catch (error) {
-      return response.json({ error: error.message });
+      return response.status(400).json({ error: error.message });
     }
   },
 };

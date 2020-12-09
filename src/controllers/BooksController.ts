@@ -14,7 +14,7 @@ export default {
 
       return response.json(savedBook);
     } catch (error) {
-      return response.json({ error });
+      return response.status(400).json({ error });
     }
   },
 
@@ -28,7 +28,7 @@ export default {
 
       return response.json(book);
     } catch (error) {
-      return response.json({ error });
+      return response.status(400).json({ error });
     }
   },
 
@@ -40,7 +40,7 @@ export default {
 
       return response.json(books);
     } catch (error) {
-      return response.json({ error });
+      return response.status(400).json({ error });
     }
   },
 
@@ -54,7 +54,7 @@ export default {
 
       return response.send();
     } catch (error) {
-      return response.json(error);
+      return response.status(400).json(error);
     }
   },
 
@@ -76,7 +76,7 @@ export default {
 
       return response.json(book);
     } catch (error) {
-      return response.json({ error });
+      return response.status(400).json({ error });
     }
   },
 
@@ -93,7 +93,7 @@ export default {
 
       return response.json(book);
     } catch (error) {
-      return response.json({ error });
+      return response.status(400).json({ error });
     }
   },
 };
