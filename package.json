@@ -7,7 +7,7 @@
     "start": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js",
     "pretest": "ts-node-dev ./node_modules/typeorm/cli.js migration:run",
-    "test": "NODE_ENV=test jest",
+    "test": "NODE_ENV=test jest --watchAll",
     "posttest": "ts-node-dev ./node_modules/typeorm/cli.js schema:drop",
     "precoverage": "ts-node-dev ./node_modules/typeorm/cli.js migration:run",
     "coverage": "jest --coverage",

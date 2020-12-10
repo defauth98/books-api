@@ -1,9 +1,22 @@
 import request from 'supertest';
+import { createConnection } from 'typeorm';
 import app from '../../src/app';
 
 import createFakeUser from '../util/createFakeUser';
 
 describe('User creation', () => {
+  beforeAll(async () => {
+    await createConnection({
+      type: 'postgres',
+      host: 'localhost',
+      port: 5432,
+      username: 'docker',
+      password: 'docker',
+      database: 'books',
+      entities: ['./src/entities/*.ts'],
+      migrations: ['./src/database/*.ts'],
+    });
+  });
   it('should be create a user with valid credentials', async () => {
     const user = createFakeUser();
 

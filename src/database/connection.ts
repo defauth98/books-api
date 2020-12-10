@@ -1,10 +1,13 @@
 import { createConnection } from 'typeorm';
 
-export default createConnection({
-  type: 'postgres',
-  host: '192.168.1.11',
-  username: 'docker',
-  password: 'docker',
-  database: 'books',
-  entities: ['src/entities/**/*.ts'],
-});
+if (process.env.NODE_ENV !== 'test') {
+  createConnection({
+    entities: ['../entities/Livro.ts'],
+    type: 'postgres',
+    host: 'localhost',
+    port: 5432,
+    username: 'docker',
+    password: 'docker',
+    database: 'books',
+  }).then((connection) => console.log(connection.isConnected));
+}

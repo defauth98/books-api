@@ -7,9 +7,9 @@
   "database": "books",
   "synchronize": true,
   "logging": false,
-  "entities": ["src/entities/**/*.ts"],
-  "migrations": ["src/database/migrations/**/*.ts"],
+  "entities": ["./src/entities/*.ts"],
+  "migrations": ["./src/database/migrations/*.ts"],
   "cli": {
-    "migrationsDir": "./src/database/migrations"
+    "migrationsDir": ".src/database/migrations"
   }
 }
