@@ -7,14 +7,13 @@ import createFakeBook from '../util/createFakeBook';
 describe('Books CRUD', () => {
   beforeAll(async () => {
     await createConnection({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'docker',
-      password: 'docker',
-      database: 'books',
+      type: 'sqlite',
+      database: '__tests__/database.sqlite',
       entities: ['./src/entities/*.ts'],
       migrations: ['./src/database/*.ts'],
+      cli: {
+        migrationsDir: './src/migrations/migrations/*.ts',
+      },
     });
   });
 
