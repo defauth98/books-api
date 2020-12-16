@@ -4,7 +4,15 @@ import Books from '../entities/Book';
 
 export default {
   async create(request: Request, response: Response) {
-    const { title, description } = request.body;
+    const {
+      title,
+      description,
+      price,
+      publisher,
+      state_book,
+      date_edition,
+      created_at,
+    } = request.body;
 
     if (title.length < 2) {
       return response
@@ -20,7 +28,15 @@ export default {
 
     const bookRepository = getRepository(Books);
 
-    const book = bookRepository.create({ title, description });
+    const book = bookRepository.create({
+      title,
+      description,
+      price,
+      publisher,
+      state_book,
+      date_edition,
+      created_at,
+    });
     const savedBook = await bookRepository.save(book);
 
     return response.json(savedBook);
@@ -66,7 +82,15 @@ export default {
 
   async update(request: Request, response: Response) {
     const { id } = request.params;
-    const { title, description } = request.body;
+    const {
+      title,
+      description,
+      date_edition,
+      price,
+      publisher,
+      state_book,
+      created_at,
+    } = request.body;
 
     const bookRepository = getRepository(Books);
 
@@ -76,6 +100,11 @@ export default {
       if (book) {
         book.title = title;
         book.description = description;
+        book.date_edition = date_edition;
+        book.price = price;
+        book.publisher = publisher;
+        book.state_book = state_book;
+        book.created_at = created_at;
       }
 
       await bookRepository.save(book);

@@ -5,7 +5,6 @@ import 'dotenv/config';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
-import userView from '../views/user_view';
 import Users from '../entities/User';
 
 const secret = process.env.APP_SECRET as string;

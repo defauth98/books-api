@@ -30,19 +30,31 @@ describe('Books CRUD', () => {
   it('should not create a book without a description', async () => {
     const book = createFakeBook();
 
-    const createBookResponse = await request(app)
-      .post('/book')
-      .send({ title: book.title, description: '' });
+    const createBookResponse = await request(app).post('/book').send({
+      title: book.title,
+      description: '',
+      price: book.price,
+      publisher: book.publisher,
+      state_book: book.state_book,
+      date_edition: book.date_edition,
+      created_at: book.created_at,
+    });
 
     expect(createBookResponse.status).toEqual(400);
   });
 
-  it('should not create a book without a ttiel', async () => {
+  it('should not create a book without a title', async () => {
     const book = createFakeBook();
 
-    const createBookResponse = await request(app)
-      .post('/book')
-      .send({ title: '', description: book.description });
+    const createBookResponse = await request(app).post('/book').send({
+      title: '',
+      description: book.description,
+      price: book.price,
+      publisher: book.publisher,
+      state_book: book.state_book,
+      date_edition: book.date_edition,
+      created_at: book.created_at,
+    });
 
     expect(createBookResponse.status).toEqual(400);
   });

@@ -10,4 +10,19 @@ export default class Books {
 
   @Column()
   description: string;
+
+  @Column()
+  price: number;
+
+  @Column()
+  publisher: string;
+
+  @Column()
+  state_book: string;
+
+  @Column()
+  date_edition: string;
+
+  @Column()
+  created_at: string;
 }
