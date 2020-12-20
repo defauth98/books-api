@@ -7,13 +7,14 @@ import bcrypt from 'bcrypt';
 
 import Users from '../entities/User';
 
-const secret = process.env.APP_SECRET as string;
+const privateKey = process.env.JWT_PRIVATE_KEY;
 
 export const saltRounds = 10;
 
 function generateToken(id: string) {
-  return jwt.sign({ id }, secret, {
-    expiresIn: 86400,
+  return jwt.sign({ id }, privateKey, {
+    algorithm: 'RS256',
+    expiresIn: '86400',
   });
 }
 

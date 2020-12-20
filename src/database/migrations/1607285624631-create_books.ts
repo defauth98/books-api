@@ -15,11 +15,11 @@ export class createBooks1607285624631 implements MigrationInterface {
           },
           { name: 'title', type: 'varchar' },
           { name: 'description', type: 'varchar' },
-          { name: 'price', type: 'interger' },
+          { name: 'price', type: 'integer' },
           { name: 'publisher', type: 'varchar' },
           { name: 'state_book', type: 'varchar' },
-          { name: 'created_at', type: 'datetime' },
-          { name: 'date_edition', type: 'datetime' },
+          { name: 'created_at', type: 'time' },
+          { name: 'date_edition', type: 'time' },
         ],
       })
     );
