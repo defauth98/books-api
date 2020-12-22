@@ -1,23 +1,50 @@
-# Requisitos não funcionais
+<h1 align="center">Books API :books:</h1>
 
-1. A api deve usar typescript
-2. A api deve user alguma forma de cache
-3. A api deve usar elastic search para buscas
-4. A api deve usar o banco de dados para buscas
-5. A api deve user jest para testes
-6. A api deve usar os conceitos jest
-7. A aplicação deve usar JWT para autenticação
-8. A aplicação deve usar eslint e prettier
-9. A aplicação deve user docker compose (para api, postgres e o elastic)
+> de previsão do tempo
 
-# Requisitos funcionais
+### :nut_and_bolt: Tecnologias
 
-- [ ] O usuário deve poder criar uma conta como administrador
-- [ ] O usuário deve se logar
-- [ ] O usuário administrado pode cadastrar um livro com nome, autor, editoria e descrição
-- [ ] O usuário administrador pode editar um livro
-- [ ] O usuário administrador pode apagar um livro
-- [ ] O usuário normal pode ver uma lista de livros cadastrados
-- [ ] O usuário pode pesquisar pelo nome do livros
-- [ ] O usuário pode pesquisar por autor
-- [ ] O Usuário pode pesquisar por editora
+Esse projeto foi desenvolvido com as seguintes técnologias:
+
+- [Typescript](https://www.typescriptlang.org/)
+- [Node JS](https://nodejs.org/en/)
+- [Express](https://expressjs.com/pt-br/)
+- [Typeorm](https://typeorm.io/#/)
+- [Faker](https://www.npmjs.com/package/faker)
+- [Supertest](https://www.npmjs.com/package/supertest)
+- [Jest](https://jestjs.io/)
+
+### :tractor: Como rodar o projeto?
+
+Você vai precisar ter docker instalado na sua máquina para rodar o banco de dados PostgreSQL ou instalar diretamente na sua máquina.
+
+```bash
+# Clone o repositório
+git clone https://github.com/defauth98/books-api.gi books-api
+
+# Entre no diretório do projeto
+cd books-api
+
+# Instale as dependencias
+yarn
+
+# Rode as migrations
+yarn migrate
+
+# Configure o seu api em /src/services/api.ts e rode o app
+yarn start
+```
+
+### Autor
+
+👤 **Daniel Ribeiro**
+
+- Twitter: [@defauth8](https://twitter.com/defauth8)
+- Github: [@defauth98](https://github.com/defauth98)
+- LinkedIn: [@daniel-ribeiro-397604164](https://linkedin.com/in/daniel-ribeiro-397604164)
+
+## Licença
+
+The [MIT License]() (MIT)
+
+Copyright :copyright: 2020 - Books API
