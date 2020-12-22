@@ -7,6 +7,8 @@ import bcrypt from 'bcrypt';
 
 import Users from '../entities/User';
 
+import userView from '../views/user_view';
+
 const privateKey = process.env.JWT_PRIVATE_KEY;
 
 export const saltRounds = 10;
@@ -53,7 +55,7 @@ export default {
 
       const token = generateToken(String(savedUser.id));
 
-      return response.json({ user: savedUser, token });
+      return response.json({ user: userView.render(savedUser), token });
     } catch (error) {
       return response.status(400).json({ error: error.message });
     }
@@ -74,7 +76,7 @@ export default {
       if (isValidPass === true) {
         const token = generateToken(String(user.id));
 
-        return response.json({ user, token });
+        return response.json({ user: userView.render(user), token });
       } else {
         return response
           .status(400)

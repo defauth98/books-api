@@ -7,14 +7,13 @@ import createFakeUser from '../util/createFakeUser';
 describe('User login', () => {
   beforeAll(async () => {
     await createConnection({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'docker',
-      password: 'docker',
-      database: 'books',
+      type: 'sqlite',
+      database: '__tests__/database.sqlite',
       entities: ['./src/entities/*.ts'],
       migrations: ['./src/database/*.ts'],
+      cli: {
+        migrationsDir: './src/migrations/migrations/*.ts',
+      },
     });
   });
   it('should be login a user with valid credentials', async () => {

@@ -4,7 +4,7 @@ if (process.env.NODE_ENV !== 'test') {
   createConnection({
     entities: ['./src/entities/*.ts'],
     type: 'postgres',
-    host: '192.168.1.7',
+    host: '0.0.0.0',
     port: 5432,
     username: 'docker',
     password: 'docker',
