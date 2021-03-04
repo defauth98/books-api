@@ -21,8 +21,8 @@ services:
     ports: 
      - 5432:5432
     environment:
-      POSTGRES_PASSWORD: docker
-      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: book
+      POSTGRES_USER: book
     networks: 
      - api
 networks:
