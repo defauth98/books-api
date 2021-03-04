@@ -5372,11 +5372,6 @@ sqlite3@^5.0.0:
   optionalDependencies:
     node-gyp "3.x"
 
-sqlite@^4.0.18:
-  version "4.0.18"
-  resolved "https://registry.yarnpkg.com/sqlite/-/sqlite-4.0.18.tgz#7bffe6f62cba5da104943a605cefab49933e5e0a"
-  integrity sha512-9Al0YUpiYPVMqq51jZgFL/X0Sux5mSJbwLP4mSKlNawlTCTDheCmfPPNoSoOo/ECghY7XGAeIsaf/HFwmwhiSg==
-
 sshpk@^1.7.0:
   version "1.16.1"
   resolved "https://registry.yarnpkg.com/sshpk/-/sshpk-1.16.1.tgz#fb661c0bef29b39db40769ee39fa70093d6f6877"

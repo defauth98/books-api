@@ -22,4 +22,7 @@ export default class Books {
 
   @Column()
   date_edition: string;
+
+  @Column()
+  created_at: string;
 }
