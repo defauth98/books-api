@@ -2,10 +2,10 @@
   {
     "name": "production",
     "type": "postgres",
-    "host": "localhost",
+    "host": "172.19.0.2",
     "port": 5432,
-    "username": "docker",
-    "password": "docker",
+    "username": "book",
+    "password": "book",
     "database": "books",
     "synchronize": true,
     "logging": false,

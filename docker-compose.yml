@@ -21,8 +21,8 @@ services:
     ports: 
      - 5432:5432
     environment:
-      POSTGRES_PASSWORD: book
       POSTGRES_USER: book
+      POSTGRES_PASSWORD: book
     networks: 
      - api
 networks:
