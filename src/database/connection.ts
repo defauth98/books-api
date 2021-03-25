@@ -4,7 +4,7 @@ if (process.env.NODE_ENV !== 'test') {
   createConnection({
     entities: ['./src/entities/*.ts'],
     type: 'postgres',
-    host: '0.0.0.0',
+    host: '172.19.0.2',
     port: 5432,
     username: 'book',
     password: 'book',
