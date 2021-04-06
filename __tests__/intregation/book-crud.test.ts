@@ -74,8 +74,6 @@ describe('Books CRUD', () => {
   });
 
   it('should not show a book', async () => {
-    const book = createFakeBook();
-
     const showBookResponse = await request(app).get('/book/999');
 
     expect(showBookResponse.status).toEqual(400);
