@@ -3,26 +3,22 @@ import jwt from 'jsonwebtoken';
 
 import 'dotenv/config';
 
-export default (request: Request, response: Response, next: NextFunction) => {
-  const authHeader = request.headers.authorization;
+export default (req: Request, res: Response, next: NextFunction) => {
+  const authHeader = req.headers.authorization;
 
-  if (!authHeader) return response.status(401).send('Token não informado');
+  if (!authHeader) return res.status(401).send('Token not provided');
 
-  // Divide o token
-  // Bearer - token
   const [, token] = authHeader.split(' ');
 
   try {
-    const publicKey = process.env.JWT_PUBLIC_KEY;
+    const payload = <any>(
+      jwt.verify(token, process.env.JWT_PRIVATE_KEY as string)
+    );
 
-    console.log(publicKey);
-
-    const payload = <any>jwt.verify(token, publicKey);
-
-    response.locals.jwtPayload = payload;
+    res.locals.jwtPayload = payload;
 
     return next();
-  } catch (error) {
-    return response.status(401).send('Invalid token');
+  } catch (err) {
+    return res.status(401).json({ error: 'Invalid token' });
   }
 };

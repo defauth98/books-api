@@ -16,6 +16,7 @@ describe('User login', () => {
       },
     });
   });
+
   it('should be login a user with valid credentials', async () => {
     const user = createFakeUser();
 

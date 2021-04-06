@@ -13,12 +13,11 @@ const privateKey = process.env.JWT_PRIVATE_KEY;
 
 export const saltRounds = 10;
 
-function generateToken(id: string) {
+const generateToken = (id: string) => {
   return jwt.sign({ id }, privateKey, {
-    algorithm: 'RS256',
     expiresIn: '86400',
   });
-}
+};
 
 export default {
   async create(request: Request, response: Response) {

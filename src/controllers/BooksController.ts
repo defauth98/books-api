@@ -11,7 +11,6 @@ export default {
       publisher,
       state_book,
       date_edition,
-      created_at,
     } = request.body;
 
     if (title.length < 2) {
@@ -35,8 +34,8 @@ export default {
       publisher,
       state_book,
       date_edition,
-      created_at,
     });
+
     const savedBook = await bookRepository.save(book);
 
     return response.json(savedBook);
