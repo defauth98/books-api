@@ -6,7 +6,7 @@ if (process.env.NODE_ENV !== 'test') {
     type: 'postgres',
     host: '172.19.0.2',
     port: 5432,
-    username: 'book',
+    username: 'postgres',
     password: 'book',
     database: 'books',
   })
