@@ -4,7 +4,7 @@
 
 ### :nut_and_bolt: Tecnologias
 
-Esse projeto foi desenvolvido com as seguintes técnologias:
+Esse projeto foi desenvolvido com as seguintes tecnologias:
 
 - [Typescript](https://www.typescriptlang.org/)
 - [Node JS](https://nodejs.org/en/)
