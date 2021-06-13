@@ -1,0 +1,53 @@
+POST http://localhost:3333/sign HTTP/1.1
+content-type: application/json
+
+{
+    "name": "anonymous",
+    "email": "anonymous@mail.com",
+    "password": "senha-123"
+}
+###
+POST http://localhost:3333/login HTTP/1.1
+content-type: application/json
+
+{
+    "email": "anonymous@mail.com",
+    "password": "senha-123"
+}
+###
+POST http://localhost:3333/book HTTP/1.1
+content-type: application/json
+
+{
+  "title": "Harry Potter",
+  "description": "O livro do Harry com um pote.",
+  "price": "200",
+  "publisher":"Alguma",
+  "state_book":"Bem ruim, parece que foi armazenado em um castelo antigo tipo uma escola.",
+  "date_edition":"20/20/20"
+}
+
+###
+GET http://localhost:3333/book HTTP/1.1
+content-type: application/json
+
+###
+GET http://localhost:3333/book/1 HTTP/1.1
+content-type: application/json
+
+###
+DELETE http://localhost:3333/book/1 HTTP/1.1
+content-type: application/json
+
+###
+PUT http://localhost:3333/book/1 HTTP/1.1
+content-type: application/json
+
+{
+  "title": "Harry Potter",
+  "description": "O livro do Harry com um pote.",
+  "price": "200",
+  "publisher":"Alguma",
+  "state_book":"Bem ruim, parece que foi armazenado em um castelo antigo tipo uma escola.",
+  "date_edition":"20/20/20"
+}
