@@ -5,14 +5,14 @@
     "host": "172.17.0.2",
     "port": 5432,
     "username": "postgres",
-    "password": "book",
+    "password": "docker",
     "database": "books",
     "synchronize": true,
     "logging": false,
     "entities": ["./src/entities/*.ts"],
     "migrations": ["./src/database/migrations/*.ts"],
     "cli": {
-      "migrationsDir": ".src/database/migrations"
+      "migrationsDir": "./src/database/migrations"
     }
   },
   {
@@ -22,7 +22,7 @@
     "entities": ["./src/entities/*.ts"],
     "migrations": ["./src/database/migrations/*.ts"],
     "cli": {
-      "migrationsDir": ".src/database/migrations"
+      "migrationsDir": "./src/database/migrations"
     }
   }
 ]
