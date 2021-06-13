@@ -1,6 +1,6 @@
 <h1 align="center">Books API :books:</h1>
 
-> de previsão do tempo
+> Uma API para um sebo de livros.
 
 ### :nut_and_bolt: Tecnologias
 
