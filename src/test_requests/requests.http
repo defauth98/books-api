@@ -2,8 +2,8 @@ POST http://localhost:3333/sign HTTP/1.1
 content-type: application/json
 
 {
-    "name": "anonymous_002",
-    "email": "anonymous_002@mail.com",
+    "name": "",
+    "email": "anonymous_003@mail.com",
     "password": "senha-123"
 }
 ###
