@@ -1,12 +1,12 @@
+import 'dotenv/config';
 import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
-import 'dotenv/config';
+import * as yup from 'yup';
 
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 import Users from '../entities/User';
-
 import userView from '../views/user_view';
 
 const privateKey = process.env.JWT_PRIVATE_KEY;
@@ -22,28 +22,22 @@ const generateToken = (id: string) => {
 export default {
   async create(request: Request, response: Response) {
     const { name, email, password } = request.body;
+    const user = {name, email, password};
 
-    if (name.length < 2) {
-      return response.status(400).json({ message: 'Não foi informado o nome' });
-    }
-
-    if (email.length < 2) {
-      return response
-        .status(400)
-        .json({ message: 'Não foi informado o email' });
-    }
-
-    if (password.length < 2) {
-      return response
-        .status(400)
-        .json({ message: 'Não foi informado a senha' });
-    }
-
-    const password_hash = await bcrypt.hash(password, 2);
-
-    const userRepository = getRepository(Users);
+    let schema = yup.object().shape({
+      name: yup.string().required().min(4),
+      email: yup.string().email().min(8),
+      password: yup.string().required().min(8),
+    });
 
     try {
+      schema
+      .validate(user)
+      .then(async user => {
+        const password_hash = await bcrypt.hash(password, 2);
+
+      const userRepository = getRepository(Users);
+
       const newUser = userRepository.create({
         name,
         email,
@@ -55,34 +49,61 @@ export default {
       const token = generateToken(String(savedUser.id));
 
       return response.json({ user: userView.render(savedUser), token });
+      })
+      .catch(err => {
+        const error = {[err.path]:[...err.errors]}
+
+        return response.json(error);
+      })
+   
+      
     } catch (error) {
-      return response.status(400).json({ error: error.message });
+      console.log(error.message)
+
+      return response.status(400).json({ error: 'cannot create user' });
     }
   },
 
   async login(request: Request, response: Response) {
     const { email, password } = request.body;
+    const user = {email, password};
 
-    const userRepository = getRepository(Users);
+    let schema = yup.object().shape({
+      email: yup.string().email().min(8),
+      password: yup.string().required().min(8),
+    });
 
-    try {
-      const user = await userRepository.findOneOrFail({ email });
+      schema
+      .validate(user)
+      .then(async user => {
+        try {
+          const userRepository = getRepository(Users);
+    
+          const User = await userRepository.findOneOrFail({ email });
+    
+          const userPassword = User.password;
+    
+          const isValidPass = await bcrypt.compare(password, userPassword);
+    
+          if (isValidPass === true) {
+            const token = generateToken(String(user.id));
+    
+            return response.json({ user: userView.render(User), token });
+          } else {
+            return response
+              .status(400)
+              .json({ error: 'Não foi possível fazer o login' });
+          }
+        } catch (error) {
+          console.log(error);
 
-      const userPassword = user.password;
+          return response.status(400).json({ error: 'Não foi possível fazer o login' });
+        }
+      })
+      .catch(err => {
+        const error = {[err.path]:[...err.errors]}
 
-      const isValidPass = await bcrypt.compare(password, userPassword);
-
-      if (isValidPass === true) {
-        const token = generateToken(String(user.id));
-
-        return response.json({ user: userView.render(user), token });
-      } else {
-        return response
-          .status(400)
-          .json({ error: 'Não foi possível fazer o login' });
-      }
-    } catch (error) {
-      return response.status(400).json({ error: error.message });
-    }
+        return response.json(error);
+      })
   },
 };

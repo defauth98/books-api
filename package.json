@@ -25,10 +25,11 @@
     "@types/jsonwebtoken": "^8.5.0",
     "@types/supertest": "^2.0.10",
     "@types/yup": "^0.29.10",
-    "@typescript-eslint/eslint-plugin": "^4.9.0",
-    "@typescript-eslint/parser": "^4.9.0",
-    "eslint": "^7.14.0",
+    "@typescript-eslint/eslint-plugin": "^4.27.0",
+    "@typescript-eslint/parser": "^4.27.0",
+    "eslint": "^7.28.0",
     "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-import": "^2.22.1",
     "factory-girl": "^5.0.4",
@@ -49,6 +50,6 @@
     "pg": "^8.5.1",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.2.29",
-    "yup": "^0.32.1"
+    "yup": "^0.32.9"
   }
 }

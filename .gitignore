@@ -1,5 +1,13 @@
+# folders
 node_modules/
+coverage/
+
+# files
 .env
 speedcc.fit
 *.sqlite
 *.pem
+
+# package
+package-lock.json
+yarn.lock
