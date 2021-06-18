@@ -34,29 +34,34 @@ export default {
       schema
       .validate(user)
       .then(async user => {
+        
         const password_hash = await bcrypt.hash(password, 2);
+        
+        const userRepository = getRepository(Users);
+        
+        const User = await userRepository.find({ email });
 
-      const userRepository = getRepository(Users);
+        if(User.length) {
+          return response.status(400).json({error: 'User has already been created'})
+        }
 
-      const newUser = userRepository.create({
-        name,
-        email,
-        password: password_hash,
-      });
+        const newUser = userRepository.create({
+          name,
+          email,
+          password: password_hash,
+        });
 
-      const savedUser = await userRepository.save(newUser);
+        const savedUser = await userRepository.save(newUser);
 
-      const token = generateToken(String(savedUser.id));
+        const token = generateToken(String(savedUser.id));
 
-      return response.json({ user: userView.render(savedUser), token });
+        return response.json({ user: userView.render(savedUser), token });
       })
       .catch(err => {
-        const error = {[err.path]:[...err.errors]}
+        const error = {[err.path]: err.errors}
 
-        return response.json(error);
+        return response.status(400).json(error);
       })
-   
-      
     } catch (error) {
       console.log(error.message)
 
