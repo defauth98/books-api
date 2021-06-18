@@ -1,6 +1,6 @@
 <h1 align="center">Books API :books:</h1>
 
-> Uma API para um sebo de livros.
+> Uma API para um sebo de livros. Onde é possível cadastrar um usuário e logar. E também cadastrar, editar e apagar livros.
 
 ### :nut_and_bolt: Tecnologias
 
