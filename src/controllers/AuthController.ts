@@ -108,7 +108,7 @@ export default {
       .catch(err => {
         const error = {[err.path]:[...err.errors]}
 
-        return response.json(error);
+        return response.status(400).json({error});
       })
   },
 };
