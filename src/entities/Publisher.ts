@@ -1,16 +1,13 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('users')
-export default class Users {
+@Entity('publishers')
+export default class Publisher {
   @PrimaryGeneratedColumn('increment')
-  user_id: number;
-
-  @Column()
-  email: string;
-
-  @Column()
-  password: string;
+  id: number;
 
   @Column()
   name: string;
+
+  @Column()
+  created_at: string;
 }

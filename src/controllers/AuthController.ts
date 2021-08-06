@@ -34,7 +34,6 @@ export default {
       schema
       .validate(user)
       .then(async user => {
-        
         const password_hash = await bcrypt.hash(password, 2);
         
         const userRepository = getRepository(Users);
@@ -53,14 +52,13 @@ export default {
 
         const savedUser = await userRepository.save(newUser);
 
-        const token = generateToken(String(savedUser.id));
+        const token = generateToken(String(savedUser.user_id));
 
         return response.json({ user: userView.render(savedUser), token });
       })
       .catch(err => {
-        const error = {[err.path]: err.errors}
-
-        return response.status(400).json(error);
+        console.log(err)
+        return response.status(400).json(err);
       })
     } catch (error) {
       console.log(error.message)

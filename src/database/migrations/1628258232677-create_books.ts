@@ -1,6 +1,7 @@
-import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import {MigrationInterface, QueryRunner, Table, TableColumn, TableForeignKey} from "typeorm";
 
-export class createBooks1607285624631 implements MigrationInterface {
+export class createBooks1628258232677 implements MigrationInterface {
+
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
@@ -15,21 +16,33 @@ export class createBooks1607285624631 implements MigrationInterface {
           },
           { name: 'title', type: 'varchar' },
           { name: 'description', type: 'varchar' },
-          { name: 'price', type: 'integer' },
-          { name: 'publisher', type: 'varchar' },
+          { name: 'price', type: 'decimal' },
           { name: 'state_book', type: 'varchar' },
           { name: 'date_edition', type: 'varchar' },
           {
             name: 'created_at',
-            type: 'date',
-            isNullable: true,
+            type: 'timestamp',
+            default: 'now()'
           },
         ],
       })
     );
+
+    await queryRunner.addColumn("books", new TableColumn({
+      name: "publisherId",
+      type: "int"
+    }));
+
+    await queryRunner.createForeignKey("books", new TableForeignKey({
+      columnNames: ["publisherId"],
+      referencedColumnNames: ["id"],
+      referencedTableName: "publishers",
+      onDelete: "CASCADE"
+    }));
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropTable('books');
   }
+
 }

@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import Publisher from './Publisher';
 
 @Entity('books')
 export default class Books {
@@ -14,8 +15,8 @@ export default class Books {
   @Column()
   price: number;
 
-  @Column()
-  publisher: string;
+  @ManyToOne(() => Publisher, publisher => publisher.id)
+  publisher: Publisher;
 
   @Column()
   state_book: string;

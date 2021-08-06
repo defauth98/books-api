@@ -8,7 +8,7 @@ export default {
       title,
       description,
       price,
-      publisher,
+      publisherId,
       state_book,
       date_edition,
     } = request.body;
@@ -25,20 +25,24 @@ export default {
         .json({ error: 'A descrição do livro não foi informada' });
     }
 
-    const bookRepository = getRepository(Books);
+    try {
+      const bookRepository = getRepository(Books);
+      const book = new Books();
 
-    const book = bookRepository.create({
-      title,
-      description,
-      price,
-      publisher,
-      state_book,
-      date_edition,
-    });
+      book.title = title
+      book.description = description
+      book.price = price
+      book.state_book = state_book
+      book.date_edition = date_edition
+      book.publisher = publisherId
 
-    const savedBook = await bookRepository.save(book);
+      const savedBook = await bookRepository.save(book);
 
-    return response.json(savedBook);
+      return response.json(savedBook);
+    } catch (error) {
+      console.error(error)
+    }
+    
   },
 
   async show(request: Request, response: Response) {
@@ -47,9 +51,9 @@ export default {
     const bookRepository = getRepository(Books);
 
     try {
-      const book = await bookRepository.findOneOrFail({ where: { id } });
+      const book = await bookRepository.findOneOrFail({ where: { id }, relations:['publisher']});
 
-      return response.json(book);
+      return response.json({book});
     } catch (error) {
       return response.status(400).json({ error });
     }
@@ -58,7 +62,7 @@ export default {
   async index(request: Request, response: Response) {
     const bookRepository = getRepository(Books);
 
-    const books = await bookRepository.find();
+    const books = await bookRepository.find({relations:['publisher']});
 
     return response.json(books);
   },
@@ -86,7 +90,7 @@ export default {
       description,
       date_edition,
       price,
-      publisher,
+      publisherId,
       state_book,
       created_at,
     } = request.body;
@@ -101,7 +105,7 @@ export default {
         book.description = description;
         book.date_edition = date_edition;
         book.price = price;
-        book.publisher = publisher;
+        book.publisher = publisherId;
         book.state_book = state_book;
         book.created_at = created_at;
       }

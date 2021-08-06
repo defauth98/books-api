@@ -1,13 +1,16 @@
 import express from 'express';
 import AuthController from './controllers/AuthController';
 import BooksController from './controllers/BooksController';
+import PublisherController from './controllers/PublisherController';
 
 import Authentication from './middlewares/authentication';
 
 const routes = express.Router();
 
-routes.post('/sign', AuthController.create);
 routes.post('/login', AuthController.login);
+routes.post('/sign', AuthController.create);
+
+routes.post('/publisher', PublisherController.create);
 
 routes.post('/book', BooksController.create);
 routes.get('/book/:id', BooksController.show);
