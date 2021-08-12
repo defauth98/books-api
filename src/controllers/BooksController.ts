@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 import Books from '../entities/Book';
+import Publisher from '../entities/Publisher';
 
 export default {
   async create(request: Request, response: Response) {
@@ -8,7 +9,7 @@ export default {
       title,
       description,
       price,
-      publisherId,
+      publisherName,
       state_book,
       date_edition,
     } = request.body;
@@ -27,6 +28,23 @@ export default {
 
     try {
       const bookRepository = getRepository(Books);
+      const publisherRepository = getRepository(Publisher);
+      let publisherId;
+
+      let publisher = await publisherRepository.findOne({name: publisherName})
+
+      if(publisher) {
+        publisherId = publisher.id;
+      } else {
+        const newPublisher = new Publisher();
+
+        newPublisher.name = publisherName;
+
+        const savedPublisher = await publisherRepository.save(newPublisher);
+
+        publisherId = savedPublisher.id;
+      }
+
       const book = new Books();
 
       book.title = title
