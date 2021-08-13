@@ -93,9 +93,9 @@ export default {
     try {
       const book = await bookRepository.findOneOrFail(id);
 
-      await bookRepository.delete(book);
+      await bookRepository.remove(book);
 
-      return response.send();
+      return response.status(204).send();
     } catch (error) {
       return response.status(400).json(error);
     }
