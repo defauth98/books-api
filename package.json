@@ -4,6 +4,7 @@
   "main": "index.js",
   "author": "defauth98 <neto.daniribeiro@gmail.com>",
   "scripts": {
+    "lint":"eslint --fix --ext .js,.jsx .",
     "start": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js",
     "migrate": "ts-node-dev ./node_modules/typeorm/cli.js -c dev migration:run",
@@ -28,7 +29,7 @@
     "@types/yup": "^0.29.10",
     "@typescript-eslint/eslint-plugin": "^4.27.0",
     "@typescript-eslint/parser": "^4.27.0",
-    "eslint": "^7.28.0",
+    "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^6.15.0",

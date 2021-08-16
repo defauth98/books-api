@@ -3,10 +3,14 @@ import { getRepository } from 'typeorm';
 import Books from '../entities/Book';
 import Publisher from '../entities/Publisher';
 
-import ErrorView from '../views/error_view'
+import ErrorView from '../views/error_view';
+
+interface MulterRequest extends Request {
+  file: any;
+}
 
 export default {
-  async create(request: Request, response: Response) {
+  async create(request: MulterRequest, response: Response) {
     const {
       title,
       description,
@@ -19,24 +23,24 @@ export default {
     if (title.length < 2) {
       return response
         .status(400)
-        .json({ message: "Cannot create a book", error: "Title is required" });
+        .json({ message: 'Cannot create a book', error: 'Title is required' });
     }
 
     if (description.length < 2) {
       return response
         .status(400)
-        .json({message: "Cannot create a book", error: "Description is required" });
+        .json({ message: 'Cannot create a book', error: 'Description is required' });
     }
 
     try {
       const bookRepository = getRepository(Books);
       const publisherRepository = getRepository(Publisher);
-      const image_path = 'http://localhost:3333/uploads/' + 'request.file.filename';
-      
-      let publisherId: any;
-      let publisher = await publisherRepository.findOne({name: publisherName})
+      const image_path = `http://localhost:3333/uploads/${request.file.filename}`;
 
-      if(publisher) {
+      let publisherId: any;
+      const publisher = await publisherRepository.findOne({ name: publisherName });
+
+      if (publisher) {
         publisherId = publisher.id;
       } else {
         const newPublisher = new Publisher();
@@ -50,19 +54,19 @@ export default {
 
       const book = new Books();
 
-      book.title = title
-      book.description = description
-      book.price = price
-      book.state_book = state_book
-      book.date_edition = date_edition
-      book.publisher = publisherId
-      book.image_path = image_path
+      book.title = title;
+      book.description = description;
+      book.price = price;
+      book.state_book = state_book;
+      book.date_edition = date_edition;
+      book.publisher = publisherId;
+      book.image_path = image_path;
 
       const savedBook = await bookRepository.save(book);
 
       return response.status(200).json(savedBook);
     } catch (error) {
-      console.error(error)
+      return response.status(400).json({ message: 'Cannot create a book' });
     }
   },
 
@@ -72,9 +76,9 @@ export default {
     const bookRepository = getRepository(Books);
 
     try {
-      const book = await bookRepository.findOneOrFail({ where: { id }, relations:['publisher']});
+      const book = await bookRepository.findOneOrFail({ where: { id }, relations: ['publisher'] });
 
-      return response.json({book});
+      return response.json({ book });
     } catch (error) {
       return response.status(400).json({ error: 'Book not found' });
     }
@@ -83,7 +87,7 @@ export default {
   async index(request: Request, response: Response) {
     const bookRepository = getRepository(Books);
 
-    const books = await bookRepository.find({relations:['publisher']});
+    const books = await bookRepository.find({ relations: ['publisher'] });
 
     return response.json(books);
   },
@@ -96,15 +100,15 @@ export default {
     try {
       const book = await bookRepository.findOne(id);
 
-      if(!book) {
-        return response.status(400).json({message: 'Delete failed', error: 'Book not found'});
+      if (!book) {
+        return response.status(400).json({ message: 'Delete failed', error: 'Book not found' });
       }
 
       await bookRepository.remove(book);
 
-      return response.status(204).json({message: 'Book deleted successfully'});
+      return response.status(204).json({ message: 'Book deleted successfully' });
     } catch (error) {
-      return response.status(400).json({message: 'Delete failed', error: ErrorView.render(error)});
+      return response.status(400).json({ message: 'Delete failed', error: ErrorView.render(error) });
     }
   },
 
@@ -124,7 +128,7 @@ export default {
     try {
       const book = await bookRepository.findOne(id);
 
-      if(!book) {
+      if (!book) {
         return response.status(400).json({ message: 'Cannot update book', error: 'Book not found' });
       }
 
@@ -139,7 +143,7 @@ export default {
 
       await bookRepository.save(book);
 
-      return response.json({message: "Updated book", book});
+      return response.json({ message: 'Updated book', book });
     } catch (error) {
       return response.status(400).json({ message: 'Cannot update book' });
     }
