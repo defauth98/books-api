@@ -21,7 +21,7 @@ describe('User creation', () => {
     const user = createFakeUser();
 
     const createUserResponse = await request(app).post('/sign').send(user);
-
+   
     expect(createUserResponse.status).toEqual(200);
     expect(createUserResponse.body).toHaveProperty('user');
     expect(createUserResponse.body).toHaveProperty('token');
@@ -39,7 +39,8 @@ describe('User creation', () => {
     });
 
     expect(createUserResponse.status).toEqual(400);
-    expect(createUserResponse.body.name).toEqual(['name is a required field']);
+    expect(createUserResponse.body.message).toEqual('Cannot create a user')
+    expect(createUserResponse.body.error.name).toEqual('name is a required field')
   });
 
   it('not should be create a user without a email', async () => {
@@ -52,7 +53,8 @@ describe('User creation', () => {
     });
 
     expect(createUserResponse.status).toEqual(400);
-    expect(createUserResponse.body.email).toEqual(['email must be at least 8 characters']);
+    expect(createUserResponse.body.message).toEqual('Cannot create a user')
+    expect(createUserResponse.body.error.email).toEqual('email must be at least 8 characters');
   });
 
   it('not should be create a user without a password', async () => {
@@ -65,7 +67,8 @@ describe('User creation', () => {
     });
 
     expect(createUserResponse.status).toEqual(400);
-    expect(createUserResponse.body.password).toEqual(['password is a required field']);
+    expect(createUserResponse.body.message).toEqual('Cannot create a user')
+    expect(createUserResponse.body.error.password).toEqual('password is a required field');
   });
 
   it('should give a jwt token when accont has been created', async () => {
@@ -73,15 +76,15 @@ describe('User creation', () => {
 
     const createUserResponse = await request(app).post('/sign').send(user);
 
-    expect(createUserResponse.body).toHaveProperty('token');
     expect(createUserResponse.status).toEqual(200);
+    expect(createUserResponse.body).toHaveProperty('token');
+    expect(createUserResponse.body).toHaveProperty('user');
+    expect(createUserResponse.body.user.email).toEqual(user.email);
   });
 
   it('should not create a accont with a emails who already exists', async () => {
     const user = createFakeUser();
-
     await request(app).post('/sign').send(user);
-
     const secondRequest = await request(app).post('/sign').send(user);
 
     expect(secondRequest.body).toHaveProperty('error');

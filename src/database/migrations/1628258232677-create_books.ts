@@ -19,11 +19,7 @@ export class createBooks1628258232677 implements MigrationInterface {
           { name: 'price', type: 'decimal' },
           { name: 'state_book', type: 'varchar' },
           { name: 'date_edition', type: 'varchar' },
-          {
-            name: 'created_at',
-            type: 'timestamp',
-            default: 'now()'
-          },
+          { name: 'image_path', type: 'varchar' },
         ],
       })
     );

@@ -25,6 +25,12 @@ describe('Books CRUD', () => {
     expect(createBookResponse.status).toEqual(200);
     expect(createBookResponse.body).toHaveProperty('title');
     expect(createBookResponse.body).toHaveProperty('description');
+    expect(createBookResponse.body).toHaveProperty('price');
+    expect(createBookResponse.body).toHaveProperty('state_book');
+    expect(createBookResponse.body).toHaveProperty('date_edition');
+    expect(createBookResponse.body).toHaveProperty('publisher');
+    expect(createBookResponse.body).toHaveProperty('image_path');
+    expect(createBookResponse.body).toHaveProperty('id');
   });
 
   it('should not create a book without a description', async () => {
@@ -34,13 +40,15 @@ describe('Books CRUD', () => {
       title: book.title,
       description: '',
       price: book.price,
-      publisher: book.publisher,
+      publisher: book.publisherName,
       state_book: book.state_book,
       date_edition: book.date_edition,
-      created_at: book.created_at,
     });
 
     expect(createBookResponse.status).toEqual(400);
+    expect(createBookResponse.body).toHaveProperty('message');
+    expect(createBookResponse.body).toHaveProperty('error');
+    expect(createBookResponse.body.error).toEqual('Description is required');
   });
 
   it('should not create a book without a title', async () => {
@@ -50,13 +58,16 @@ describe('Books CRUD', () => {
       title: '',
       description: book.description,
       price: book.price,
-      publisher: book.publisher,
+      publisherName: book.publisherName,
       state_book: book.state_book,
       date_edition: book.date_edition,
-      created_at: book.created_at,
     });
 
+
     expect(createBookResponse.status).toEqual(400);
+    expect(createBookResponse.body).toHaveProperty('message');
+    expect(createBookResponse.body).toHaveProperty('error');
+    expect(createBookResponse.body.error).toEqual('Title is required');
   });
 
   it('should show a book', async () => {
@@ -69,19 +80,25 @@ describe('Books CRUD', () => {
     );
 
     expect(showBookResponse.status).toEqual(200);
-    expect(showBookResponse.body).toHaveProperty('title');
-    expect(showBookResponse.body).toHaveProperty('description');
+    expect(showBookResponse.body.book).toHaveProperty('title');
+    expect(showBookResponse.body.book).toHaveProperty('description');
+    expect(showBookResponse.body.book).toHaveProperty('price');
+    expect(showBookResponse.body.book).toHaveProperty('state_book');
+    expect(showBookResponse.body.book).toHaveProperty('date_edition');
+    expect(showBookResponse.body.book).toHaveProperty('image_path');
+    expect(showBookResponse.body.book).toHaveProperty('publisher');
   });
 
   it('should not show a book', async () => {
     const showBookResponse = await request(app).get('/book/999');
 
     expect(showBookResponse.status).toEqual(400);
+    expect(showBookResponse.body.error).toEqual('Book not found');
   });
 
   it('should index all books', async () => {
     const showBookResponse = await request(app).get('/book');
-
+   
     expect(showBookResponse.status).toEqual(200);
   });
 
@@ -96,7 +113,15 @@ describe('Books CRUD', () => {
       .put(`/book/${createBookResponse.body.id}`)
       .send(newBook);
 
+
     expect(updateBookResponse.status).toEqual(200);
+    expect(updateBookResponse.body.message).toEqual('Updated book');
+    expect(updateBookResponse.body.book).toHaveProperty('title');
+    expect(updateBookResponse.body.book).toHaveProperty('description');
+    expect(updateBookResponse.body.book).toHaveProperty('price');
+    expect(updateBookResponse.body.book).toHaveProperty('state_book');
+    expect(updateBookResponse.body.book).toHaveProperty('date_edition');
+    expect(updateBookResponse.body.book).toHaveProperty('image_path');
   });
 
   it('should not update a book', async () => {
@@ -104,6 +129,7 @@ describe('Books CRUD', () => {
     const updateBookResponse = await request(app).put('/book/999').send(book);
 
     expect(updateBookResponse.status).toEqual(400);
+    expect(updateBookResponse.body.error).toEqual('Book not found');
   });
 
   it('should delete a book', async () => {
@@ -115,13 +141,16 @@ describe('Books CRUD', () => {
       `/book/${createdBookResponse.body.id}`
     );
 
-    expect(deleteBookResponse.status).toEqual(200);
+    expect(deleteBookResponse.status).toEqual(204);
   });
 
   it('should not delete a book', async () => {
     const deleteBookResponse = await request(app).delete('/book/999');
 
     expect(deleteBookResponse.status).toEqual(400);
+    expect(deleteBookResponse.body).toHaveProperty('message');
+    expect(deleteBookResponse.body).toHaveProperty('error');
+    expect(deleteBookResponse.body.error).toEqual('Book not found');
   });
 
   it('should be search a book by title', async () => {
@@ -144,5 +173,6 @@ describe('Books CRUD', () => {
       .send({ title: 'qualquer coisa' });
 
     expect(searchBookResponse.status).toEqual(400);
+    expect(searchBookResponse.body.error).toEqual('Cannot find book');
   });
 });

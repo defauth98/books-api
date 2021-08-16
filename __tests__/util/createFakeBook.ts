@@ -5,10 +5,9 @@ function createFakeBook() {
     title: faker.name.findName(),
     description: faker.lorem.paragraph(1),
     price: 100,
-    publisher: faker.name.findName(),
+    publisherName: faker.name.findName(),
     state_book: 'Bom estado',
     date_edition: faker.date.recent(),
-    created_at: faker.date.recent(),
   };
 
   return book;

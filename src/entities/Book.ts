@@ -25,5 +25,5 @@ export default class Books {
   date_edition: string;
 
   @Column()
-  created_at: string;
+  image_path: string;
 }

@@ -3,6 +3,8 @@ import { getRepository } from 'typeorm';
 import Books from '../entities/Book';
 import Publisher from '../entities/Publisher';
 
+import ErrorView from '../views/error_view'
+
 export default {
   async create(request: Request, response: Response) {
     const {
@@ -17,20 +19,21 @@ export default {
     if (title.length < 2) {
       return response
         .status(400)
-        .json({ error: 'O título do livro não foi informado' });
+        .json({ message: "Cannot create a book", error: "Title is required" });
     }
 
     if (description.length < 2) {
       return response
         .status(400)
-        .json({ error: 'A descrição do livro não foi informada' });
+        .json({message: "Cannot create a book", error: "Description is required" });
     }
 
     try {
       const bookRepository = getRepository(Books);
       const publisherRepository = getRepository(Publisher);
-      let publisherId;
-
+      const image_path = 'http://localhost:3333/uploads/' + 'request.file.filename';
+      
+      let publisherId: any;
       let publisher = await publisherRepository.findOne({name: publisherName})
 
       if(publisher) {
@@ -53,14 +56,14 @@ export default {
       book.state_book = state_book
       book.date_edition = date_edition
       book.publisher = publisherId
+      book.image_path = image_path
 
       const savedBook = await bookRepository.save(book);
 
-      return response.json(savedBook);
+      return response.status(200).json(savedBook);
     } catch (error) {
       console.error(error)
     }
-    
   },
 
   async show(request: Request, response: Response) {
@@ -73,7 +76,7 @@ export default {
 
       return response.json({book});
     } catch (error) {
-      return response.status(400).json({ error });
+      return response.status(400).json({ error: 'Book not found' });
     }
   },
 
@@ -91,13 +94,17 @@ export default {
     const bookRepository = getRepository(Books);
 
     try {
-      const book = await bookRepository.findOneOrFail(id);
+      const book = await bookRepository.findOne(id);
+
+      if(!book) {
+        return response.status(400).json({message: 'Delete failed', error: 'Book not found'});
+      }
 
       await bookRepository.remove(book);
 
-      return response.status(204).send();
+      return response.status(204).json({message: 'Book deleted successfully'});
     } catch (error) {
-      return response.status(400).json(error);
+      return response.status(400).json({message: 'Delete failed', error: ErrorView.render(error)});
     }
   },
 
@@ -110,13 +117,16 @@ export default {
       price,
       publisherId,
       state_book,
-      created_at,
     } = request.body;
 
     const bookRepository = getRepository(Books);
 
     try {
       const book = await bookRepository.findOne(id);
+
+      if(!book) {
+        return response.status(400).json({ message: 'Cannot update book', error: 'Book not found' });
+      }
 
       if (book) {
         book.title = title;
@@ -125,14 +135,13 @@ export default {
         book.price = price;
         book.publisher = publisherId;
         book.state_book = state_book;
-        book.created_at = created_at;
       }
 
       await bookRepository.save(book);
 
-      return response.json(book);
+      return response.json({message: "Updated book", book});
     } catch (error) {
-      return response.status(400).json({ error });
+      return response.status(400).json({ message: 'Cannot update book' });
     }
   },
 
@@ -152,6 +161,6 @@ export default {
 
     return response
       .status(400)
-      .json({ error: 'Não foi possivel encontrar um livro com esse titulo' });
+      .json({ error: 'Cannot find book' });
   },
 };

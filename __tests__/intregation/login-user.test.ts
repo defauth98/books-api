@@ -28,6 +28,9 @@ describe('User login', () => {
     });
 
     expect(loginResponse.status).toEqual(200);
+    expect(loginResponse.body).toHaveProperty('user');
+    expect(loginResponse.body).toHaveProperty('token');
+    expect(loginResponse.body.user.email).toEqual(user.email);
   });
 
   it('should not login a user with invalid password', async () => {
@@ -40,6 +43,11 @@ describe('User login', () => {
       .send({ email: user.email, password: '' });
 
     expect(loginResponse.status).toEqual(400);
+    expect(loginResponse.body).toHaveProperty('message');
+    expect(loginResponse.body).toHaveProperty('error');
+    expect(loginResponse.body.error).toHaveProperty('password');
+    expect(loginResponse.body.message).toEqual('Login error');
+    expect(loginResponse.body.error.password).toEqual('password is a required field');
   });
 
   it('should not login a user with invalid email', async () => {
@@ -52,5 +60,9 @@ describe('User login', () => {
       .send({ email: 'mail@mail.com', password: user.password });
 
     expect(loginResponse.status).toEqual(400);
+    expect(loginResponse.body).toHaveProperty('message');    
+    expect(loginResponse.body).toHaveProperty('error');
+    expect(loginResponse.body.message).toEqual('Login error');
+    expect(loginResponse.body.error).toEqual('Email is incorrect');
   });
 });

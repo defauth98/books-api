@@ -7,7 +7,4 @@ export default class Publisher {
 
   @Column()
   name: string;
-
-  @Column()
-  created_at: string;
 }

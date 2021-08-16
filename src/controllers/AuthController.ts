@@ -8,6 +8,7 @@ import bcrypt from 'bcrypt';
 
 import Users from '../entities/User';
 import userView from '../views/user_view';
+import ErrorView from '../views/error_view'
 
 const privateKey = process.env.JWT_PRIVATE_KEY;
 
@@ -30,41 +31,42 @@ export default {
       password: yup.string().required().min(8),
     });
 
-    try {
-      schema
-      .validate(user)
-      .then(async user => {
-        const password_hash = await bcrypt.hash(password, 2);
-        
-        const userRepository = getRepository(Users);
-        
-        const User = await userRepository.find({ email });
+    schema
+    .validate(user)
+    .then(async user => {
+      const password_hash = await bcrypt.hash(password, 2);
+      const userRepository = getRepository(Users);
+      const User = await userRepository.find({ email });
 
-        if(User.length) {
-          return response.status(400).json({error: 'User has already been created'})
-        }
+      if(User.length) {
+        return response.status(400).json({
+          message: 'Cannot create a user',
+          error: 'User has already been created'
+        })
+      }
 
-        const newUser = userRepository.create({
-          name,
-          email,
-          password: password_hash,
-        });
+      const newUser = userRepository.create({
+        name,
+        email,
+        password: password_hash,
+      });
 
-        const savedUser = await userRepository.save(newUser);
+      const savedUser = await userRepository.save(newUser);
+      const token = generateToken(String(savedUser.id));
 
-        const token = generateToken(String(savedUser.user_id));
+      return response.json({
+        message: "User created successfully",
+        user: userView.render(savedUser),
+        token 
+      });
 
-        return response.json({ user: userView.render(savedUser), token });
-      })
-      .catch(err => {
-        console.log(err)
-        return response.status(400).json(err);
-      })
-    } catch (error) {
-      console.log(error.message)
-
-      return response.status(400).json({ error: 'cannot create user' });
-    }
+    })
+    .catch(error => {
+      return response.status(400).json({
+        message: 'Cannot create a user', 
+        error: ErrorView.render(error)
+      });
+    })
   },
 
   async login(request: Request, response: Response) {
@@ -79,34 +81,34 @@ export default {
       schema
       .validate(user)
       .then(async user => {
-        try {
-          const userRepository = getRepository(Users);
-    
-          const User = await userRepository.findOneOrFail({ email });
-    
-          const userPassword = User.password;
-    
-          const isValidPass = await bcrypt.compare(password, userPassword);
-    
-          if (isValidPass === true) {
-            const token = generateToken(String(user.id));
-    
-            return response.json({ user: userView.render(User), token });
-          } else {
-            return response
-              .status(400)
-              .json({ error: 'Não foi possível fazer o login' });
-          }
-        } catch (error) {
-          console.log(error);
-
-          return response.status(400).json({ error: 'Não foi possível fazer o login' });
+        const userRepository = getRepository(Users);
+  
+        const User = await userRepository.findOne({ email });
+        
+        if(!User) {
+          return response
+            .status(400)
+            .json({ message: "Login error", error: 'Email is incorrect' });
         }
-      })
-      .catch(err => {
-        const error = {[err.path]:[...err.errors]}
 
-        return response.status(400).json({error});
+        const userPassword = User.password;
+        const isValidPass = await bcrypt.compare(password, userPassword);
+  
+        if (isValidPass === true) {
+          const token = generateToken(String(user.id));
+
+          return response.json({ user: userView.render(User), token });
+        } else {
+          return response
+            .status(400)
+            .json({ message: "Login error", error: 'Password is incorrect' });
+        }
+       
+      })
+      .catch(error => {
+        return response.status(400).json({
+          message: "Login error",
+          error: ErrorView.render(error)});
       })
   },
 };

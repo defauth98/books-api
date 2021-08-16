@@ -9,9 +9,7 @@ export default {
 
     const publisherRepository = getRepository(Publisher);
 
-    const publisher = publisherRepository.create({
-      name
-    });
+    const publisher = publisherRepository.create({ name });
 
     const savedPublisher = await publisherRepository.save(publisher);
 

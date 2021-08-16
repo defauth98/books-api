@@ -17,11 +17,6 @@ export class createOrders1628258239060 implements MigrationInterface {
             name: 'done',
             type:'boolean',
           },
-          {
-            name: 'created_at',
-            type: 'timestamp',
-            default: 'now()'
-          },
         ],
       })
     );

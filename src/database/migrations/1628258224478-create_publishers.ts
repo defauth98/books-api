@@ -15,11 +15,6 @@ export class createPublishers1628258224478 implements MigrationInterface {
             generationStrategy: 'increment',
           },
           { name: 'name', type: 'varchar' },
-          {
-            name: 'created_at',
-            type: 'timestamp',
-            default: 'now()'
-          },
         ],
       })
     );
