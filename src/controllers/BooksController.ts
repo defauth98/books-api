@@ -150,7 +150,7 @@ export default {
   },
 
   async search(request: Request, response: Response) {
-    const { title } = request.body;
+    const { title } = request.params;
 
     const bookRepository = getRepository(Books);
 

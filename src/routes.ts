@@ -23,6 +23,6 @@ routes.get('/book', BooksController.index);
 routes.delete('/book/:id', BooksController.delete);
 routes.put('/book/:id', BooksController.update);
 
-routes.get('/search', BooksController.search);
+routes.get('/search/:title', BooksController.search);
 
 export default routes;
