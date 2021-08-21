@@ -32,6 +32,10 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 - [Jest](https://jestjs.io/)
 - [Eslint](https://eslint.org/)
 
+### Modelagem do bando de dados
+
+<img src=".github/modelagem-books.png" alt="Modelagem do banco de dados">
+
 ### :whale: Criando um container com o docker
 
 [Clique aqui](https://docs.docker.com/engine/install/) para instalar o docker na sua maquina

@@ -5,7 +5,8 @@
   "author": "defauth98 <neto.daniribeiro@gmail.com>",
   "scripts": {
     "lint":"eslint --fix --ext .js,.jsx .",
-    "start": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
+    "dev": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
+    "start":"node dist/src/server.js",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js",
     "migrate": "ts-node-dev ./node_modules/typeorm/cli.js -c dev migration:run",
     "revert": "ts-node-dev ./node_modules/typeorm/cli.js -c dev migration:revert",

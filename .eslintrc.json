@@ -17,6 +17,8 @@
         "import/no-unresolved": "off",
         "import/extensions": "off",
         "camelcase":"off",
-        "consistent-return":"off"
+        "consistent-return":"off",
+        "import/prefer-default-export":"off",
+        "class-methods-use-this":"off"
     }
 }

@@ -1,4 +1,6 @@
-import {MigrationInterface, QueryRunner, Table, TableColumn, TableForeignKey} from "typeorm";
+import {
+  MigrationInterface, QueryRunner, Table, TableColumn, TableForeignKey,
+} from 'typeorm';
 
 export class createOrders1628258239060 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -15,34 +17,34 @@ export class createOrders1628258239060 implements MigrationInterface {
           },
           {
             name: 'done',
-            type:'boolean',
+            type: 'boolean',
           },
         ],
-      })
+      }),
     );
 
-    await queryRunner.addColumn("orders", new TableColumn({
-      name: "userId",
-      type: "int"
+    await queryRunner.addColumn('orders', new TableColumn({
+      name: 'userId',
+      type: 'int',
     }));
 
-    await queryRunner.createForeignKey("orders", new TableForeignKey({
-      columnNames: ["userId"],
-      referencedColumnNames: ["id"],
-      referencedTableName: "users",
-      onDelete: "CASCADE"
-    }));
-    
-    await queryRunner.addColumn("orders", new TableColumn({
-      name: "bookId",
-      type: "int"
+    await queryRunner.createForeignKey('orders', new TableForeignKey({
+      columnNames: ['userId'],
+      referencedColumnNames: ['id'],
+      referencedTableName: 'users',
+      onDelete: 'CASCADE',
     }));
 
-    await queryRunner.createForeignKey("orders", new TableForeignKey({
-      columnNames: ["bookId"],
-      referencedColumnNames: ["id"],
-      referencedTableName: "books",
-      onDelete: "CASCADE"
+    await queryRunner.addColumn('orders', new TableColumn({
+      name: 'bookId',
+      type: 'int',
+    }));
+
+    await queryRunner.createForeignKey('orders', new TableForeignKey({
+      columnNames: ['bookId'],
+      referencedColumnNames: ['id'],
+      referencedTableName: 'books',
+      onDelete: 'CASCADE',
     }));
   }
 
