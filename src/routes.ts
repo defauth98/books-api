@@ -1,13 +1,14 @@
 import express from 'express';
 import multer from 'multer';
 import multerConfig from './config/multer';
-const upload = multer(multerConfig);
 
 import AuthController from './controllers/AuthController';
 import BooksController from './controllers/BooksController';
 import PublisherController from './controllers/PublisherController';
 
-import Authentication from './middlewares/authentication';
+// import Authentication from './middlewares/authentication';
+
+const upload = multer(multerConfig);
 
 const routes = express.Router();
 

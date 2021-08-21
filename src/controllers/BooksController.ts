@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getRepository } from 'typeorm';
+import { getRepository, ILike } from 'typeorm';
 import Books from '../entities/Book';
 import Publisher from '../entities/Publisher';
 
@@ -154,12 +154,14 @@ export default {
 
     const bookRepository = getRepository(Books);
 
-    const book = await bookRepository.find({
-      select: ['title', 'description'],
-      where: { title },
-    });
+    const book = await bookRepository.find(
+      {
+        where: { title: ILike(`%${title}%`) },
+        relations: ['publisher'],
+      },
+    );
 
-    if (book[0]) {
+    if (book !== undefined && book) {
       return response.json(book);
     }
 
