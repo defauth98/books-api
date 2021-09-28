@@ -4,6 +4,12 @@ if (process.env.PORT) {
   createConnection({
     entities: ['./src/entities/*.ts'],
     type: 'postgres',
+    ssl: true,
+    extra: {
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    },
     url: process.env.DATABASE_URL,
   })
     .then((connection) => {
