@@ -4,9 +4,9 @@
   "main": "index.js",
   "author": "defauth98 <neto.daniribeiro@gmail.com>",
   "scripts": {
-    "lint":"eslint --fix --ext .js,.jsx .",
+    "lint": "eslint --fix --ext .js,.jsx .",
     "dev": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
-    "start":"node dist/src/server.js",
+    "start": "nodemon -x ts-node src/server.ts",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js",
     "migrate": "ts-node-dev ./node_modules/typeorm/cli.js -c dev migration:run",
     "revert": "ts-node-dev ./node_modules/typeorm/cli.js -c dev migration:revert",
@@ -22,7 +22,7 @@
   "devDependencies": {
     "@babel/preset-typescript": "^7.12.7",
     "@types/bcrypt": "^3.0.0",
-    "@types/express": "^4.17.9",
+    "@types/express": "^4.17.13",
     "@types/factory-girl": "^5.0.2",
     "@types/jest": "^26.0.18",
     "@types/jsonwebtoken": "^8.5.0",
@@ -42,18 +42,29 @@
     "sqlite3": "^5.0.0",
     "supertest": "^6.0.1",
     "ts-jest": "^26.4.4",
-    "ts-node-dev": "^1.0.0",
-    "typescript": "^4.1.2"
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.4.3"
   },
   "dependencies": {
+    "@types/node": "^16.10.1",
+    "@types/express": "^4.17.13",
+    "@babel/preset-typescript": "^7.12.7",
+    "@types/bcrypt": "^3.0.0",
+    "@types/factory-girl": "^5.0.2",
+    "@types/jest": "^26.0.18",
+    "@types/jsonwebtoken": "^8.5.0",
+    "@types/supertest": "^2.0.10",
+    "@types/yup": "^0.29.10",
     "bcrypt": "^5.0.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "multer": "^1.4.3",
+    "nodemon": "^2.0.13",
     "pg": "^8.5.1",
     "reflect-metadata": "^0.1.13",
+    "ts-node": "^10.2.1",
     "typeorm": "^0.2.29",
     "yup": "^0.32.9"
   }
