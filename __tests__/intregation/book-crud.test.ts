@@ -1,7 +1,8 @@
 import request from 'supertest';
 import { createConnection } from 'typeorm';
-import app from '../../src/app';
+import fs from 'mz/fs'
 
+import app from '../../src/app';
 import createFakeBook from '../util/createFakeBook';
 
 describe('Books CRUD', () => {
@@ -20,73 +21,113 @@ describe('Books CRUD', () => {
   it('should be create a book', async () => {
     const book = createFakeBook();
 
-    const createBookResponse = await request(app).post('/book').send(book);
+    const filePath = `${__dirname}/../assets/book.jpg`;
 
-    expect(createBookResponse.status).toEqual(200);
-    expect(createBookResponse.body).toHaveProperty('title');
-    expect(createBookResponse.body).toHaveProperty('description');
-    expect(createBookResponse.body).toHaveProperty('price');
-    expect(createBookResponse.body).toHaveProperty('state_book');
-    expect(createBookResponse.body).toHaveProperty('date_edition');
-    expect(createBookResponse.body).toHaveProperty('publisher');
-    expect(createBookResponse.body).toHaveProperty('image_path');
-    expect(createBookResponse.body).toHaveProperty('id');
+    await request(app)
+      .post('/book')
+      .field('title', book.title)
+      .field('description', book.description)
+      .field('publisherName', book.publisherName)
+      .field('price', book.price)
+      .field('state_book', book.state_book)
+      .field('date_edition', `${book.date_edition}`)
+      .attach('book_cover', filePath)
+      .expect(200)
+      .then(res => {
+        const body = res.body
+
+        expect(body).toHaveProperty('title');
+        expect(body).toHaveProperty('description');
+        expect(body).toHaveProperty('price');
+        expect(body).toHaveProperty('state_book');
+        expect(body).toHaveProperty('date_edition');
+        expect(body).toHaveProperty('publisher');
+        expect(body).toHaveProperty('image_path');
+        expect(body).toHaveProperty('id');
+      })
   });
 
   it('should not create a book without a description', async () => {
     const book = createFakeBook();
 
-    const createBookResponse = await request(app).post('/book').send({
-      title: book.title,
-      description: '',
-      price: book.price,
-      publisher: book.publisherName,
-      state_book: book.state_book,
-      date_edition: book.date_edition,
-    });
+    const filePath = `${__dirname}/../assets/book.jpg`;
 
-    expect(createBookResponse.status).toEqual(400);
-    expect(createBookResponse.body).toHaveProperty('message');
-    expect(createBookResponse.body).toHaveProperty('error');
-    expect(createBookResponse.body.error).toEqual('Description is required');
+    await request(app)
+      .post('/book')
+      .field('title', book.title)
+      .field('publisherName', book.publisherName)
+      .field('price', book.price)
+      .field('state_book', book.state_book)
+      .field('date_edition', `${book.date_edition}`)
+      .attach('book_cover', filePath)
+      .expect(400)
+      .then(res => {
+        const body = res.body
+
+        expect(body).toHaveProperty('message');
+        expect(body).toHaveProperty('error');
+        expect(body.error).toEqual('Description is required');
+      })
   });
 
   it('should not create a book without a title', async () => {
     const book = createFakeBook();
 
-    const createBookResponse = await request(app).post('/book').send({
-      title: '',
-      description: book.description,
-      price: book.price,
-      publisherName: book.publisherName,
-      state_book: book.state_book,
-      date_edition: book.date_edition,
-    });
+    const filePath = `${__dirname}/../assets/book.jpg`;
 
+    await request(app)
+      .post('/book')
+      .field('description', book.description)
+      .field('publisherName', book.publisherName)
+      .field('price', book.price)
+      .field('state_book', book.state_book)
+      .field('date_edition', `${book.date_edition}`)
+      .attach('book_cover', filePath)
+      .expect(400)
+      .then(res => {
+        const body = res.body
 
-    expect(createBookResponse.status).toEqual(400);
-    expect(createBookResponse.body).toHaveProperty('message');
-    expect(createBookResponse.body).toHaveProperty('error');
-    expect(createBookResponse.body.error).toEqual('Title is required');
+        expect(body).toHaveProperty('message');
+        expect(body).toHaveProperty('error');
+        expect(body.error).toEqual('Title is required');
+      })
+
   });
 
   it('should show a book', async () => {
     const book = createFakeBook();
 
-    const createdBookResponse = await request(app).post('/book').send(book);
+    const filePath = `${__dirname}/../assets/book.jpg`;
 
-    const showBookResponse = await request(app).get(
-      `/book/${createdBookResponse.body.id}`
-    );
+    await request(app)
+      .post('/book')
+      .field('title', book.title)
+      .field('description', book.description)
+      .field('publisherName', book.publisherName)
+      .field('price', book.price)
+      .field('state_book', book.state_book)
+      .field('date_edition', `${book.date_edition}`)
+      .attach('book_cover', filePath)
+      .expect(200)
+      .then(async res => {
+        const body = res.body
 
-    expect(showBookResponse.status).toEqual(200);
-    expect(showBookResponse.body.book).toHaveProperty('title');
-    expect(showBookResponse.body.book).toHaveProperty('description');
-    expect(showBookResponse.body.book).toHaveProperty('price');
-    expect(showBookResponse.body.book).toHaveProperty('state_book');
-    expect(showBookResponse.body.book).toHaveProperty('date_edition');
-    expect(showBookResponse.body.book).toHaveProperty('image_path');
-    expect(showBookResponse.body.book).toHaveProperty('publisher');
+        await request(app).get(
+          `/book/${body.id}`
+        ).expect(200)
+          .then(res => {
+            const body = res.body
+
+            expect(body.book).toHaveProperty('title');
+            expect(body.book).toHaveProperty('description');
+            expect(body.book).toHaveProperty('price');
+            expect(body.book).toHaveProperty('state_book');
+            expect(body.book).toHaveProperty('date_edition');
+            expect(body.book).toHaveProperty('image_path');
+            expect(body.book).toHaveProperty('publisher');
+          })
+      })
+
   });
 
   it('should not show a book', async () => {
@@ -98,30 +139,49 @@ describe('Books CRUD', () => {
 
   it('should index all books', async () => {
     const showBookResponse = await request(app).get('/book');
-   
+
     expect(showBookResponse.status).toEqual(200);
   });
 
   it('should update a book', async () => {
     const book = createFakeBook();
 
-    const createBookResponse = await request(app).post('/book').send(book);
+    const filePath = `${__dirname}/../assets/book.jpg`;
 
-    const newBook = createFakeBook();
+    await request(app)
+      .post('/book')
+      .field('title', book.title)
+      .field('description', book.description)
+      .field('publisherName', book.publisherName)
+      .field('price', book.price)
+      .field('state_book', book.state_book)
+      .field('date_edition', `${book.date_edition}`)
+      .attach('book_cover', filePath)
+      .expect(200)
+      .then(async res => {
+        const body = res.body
 
-    const updateBookResponse = await request(app)
-      .put(`/book/${createBookResponse.body.id}`)
-      .send(newBook);
+        const book = createFakeBook();
 
+        const filePath = `${__dirname}/../assets/book.jpg`;
 
-    expect(updateBookResponse.status).toEqual(200);
-    expect(updateBookResponse.body.message).toEqual('Updated book');
-    expect(updateBookResponse.body.book).toHaveProperty('title');
-    expect(updateBookResponse.body.book).toHaveProperty('description');
-    expect(updateBookResponse.body.book).toHaveProperty('price');
-    expect(updateBookResponse.body.book).toHaveProperty('state_book');
-    expect(updateBookResponse.body.book).toHaveProperty('date_edition');
-    expect(updateBookResponse.body.book).toHaveProperty('image_path');
+        await request(app)
+          .put(`/book/${body.id}`)
+          .field('description', book.description)
+          .field('publisherName', book.publisherName)
+          .field('price', book.price)
+          .field('state_book', book.state_book)
+          .field('date_edition', `${book.date_edition}`)
+          .attach('book_cover', filePath)
+          .then(res => {
+            const body = res.body;
+
+            expect(body).toHaveProperty('message')
+            expect(body.book).toHaveProperty('id');
+            expect(body.book).toHaveProperty('image_path');
+          })
+      })
+
   });
 
   it('should not update a book', async () => {
@@ -135,7 +195,17 @@ describe('Books CRUD', () => {
   it('should delete a book', async () => {
     const book = createFakeBook();
 
-    const createdBookResponse = await request(app).post('/book').send(book);
+    const filePath = `${__dirname}/../assets/book.jpg`;
+
+    const createdBookResponse = await request(app)
+      .post('/book')
+      .field('title', book.title)
+      .field('description', book.description)
+      .field('publisherName', book.publisherName)
+      .field('price', book.price)
+      .field('state_book', book.state_book)
+      .field('date_edition', `${book.date_edition}`)
+      .attach('book_cover', filePath)
 
     const deleteBookResponse = await request(app).delete(
       `/book/${createdBookResponse.body.id}`
@@ -156,23 +226,23 @@ describe('Books CRUD', () => {
   it('should be search a book by title', async () => {
     const book = createFakeBook();
 
-    await request(app).post('/book').send(book);
+    const filePath = `${__dirname}/../assets/book.jpg`;
 
-    const searchBookResponse = await request(app)
-      .get('/search')
-      .send({ title: book.title });
+    await request(app)
+      .post('/book')
+      .field('title', book.title)
+      .field('description', book.description)
+      .field('publisherName', book.publisherName)
+      .field('price', book.price)
+      .field('state_book', book.state_book)
+      .field('date_edition', `${book.date_edition}`)
+      .attach('book_cover', filePath)
+      .then(async () => {
+        await request(app)
+          .get('/search')
+          .query({ title: book.title })
+          .expect(200)
+      })
 
-    expect(searchBookResponse.status).toEqual(200);
-    expect(searchBookResponse.body[0]).toHaveProperty('title');
-    expect(searchBookResponse.body[0]).toHaveProperty('description');
-  });
-
-  it('should not search a book by title', async () => {
-    const searchBookResponse = await request(app)
-      .get('/search')
-      .send({ title: 'qualquer coisa' });
-
-    expect(searchBookResponse.status).toEqual(400);
-    expect(searchBookResponse.body.error).toEqual('Cannot find book');
   });
 });

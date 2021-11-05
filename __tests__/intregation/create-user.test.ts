@@ -21,7 +21,7 @@ describe('User creation', () => {
     const user = createFakeUser();
 
     const createUserResponse = await request(app).post('/sign').send(user);
-   
+
     expect(createUserResponse.status).toEqual(200);
     expect(createUserResponse.body).toHaveProperty('user');
     expect(createUserResponse.body).toHaveProperty('token');

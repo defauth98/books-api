@@ -2,7 +2,9 @@
 node_modules/
 coverage/
 uploads/
-dist/**
+dist/
+.vscode/
+
 # files
 .env
 speedcc.fit

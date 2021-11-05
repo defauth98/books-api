@@ -20,13 +20,13 @@ export default {
       date_edition,
     } = request.body;
 
-    if (title.length < 2) {
+    if (!title || title.length < 2) {
       return response
         .status(400)
         .json({ message: 'Cannot create a book', error: 'Title is required' });
     }
 
-    if (description.length < 2) {
+    if (!description || description.length < 2) {
       return response
         .status(400)
         .json({ message: 'Cannot create a book', error: 'Description is required' });
@@ -35,6 +35,7 @@ export default {
     try {
       const bookRepository = getRepository(Books);
       const publisherRepository = getRepository(Publisher);
+
       const image_path = `http://localhost:3333/uploads/${request.file.filename}`;
 
       let publisherId: any;
@@ -66,6 +67,7 @@ export default {
 
       return response.status(200).json(savedBook);
     } catch (error) {
+      console.log(error)
       return response.status(400).json({ message: 'Cannot create a book' });
     }
   },

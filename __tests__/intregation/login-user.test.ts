@@ -60,7 +60,7 @@ describe('User login', () => {
       .send({ email: 'mail@mail.com', password: user.password });
 
     expect(loginResponse.status).toEqual(400);
-    expect(loginResponse.body).toHaveProperty('message');    
+    expect(loginResponse.body).toHaveProperty('message');
     expect(loginResponse.body).toHaveProperty('error');
     expect(loginResponse.body.message).toEqual('Login error');
     expect(loginResponse.body.error).toEqual('Email is incorrect');
