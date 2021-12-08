@@ -22,7 +22,7 @@ if (process.env.PORT) {
   createConnection({
     entities: ['./src/entities/*.ts'],
     type: 'postgres',
-    host: 'localhost',
+    host: 'postgres',
     port: 5432,
     username: 'postgres',
     password: 'docker',

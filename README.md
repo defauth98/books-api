@@ -36,23 +36,14 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 
 <img src=".github/modelagem-books.png" alt="Modelagem do banco de dados">
 
-### :whale: Criando um container com o docker
+### :tractor: Como rodar o projeto?
+
+Você vai precisar ter Docker e o Docker Compose instalado.
 
 [Clique aqui](https://docs.docker.com/engine/install/) para instalar o docker na sua maquina
 
-```sh
-# Inicie o docker
-sudo systemctl start docker
 
-# Cria um container do docker com o postgresql
-docker run --name postgres-container -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres
-```
-
-### :tractor: Como rodar o projeto?
-
-Você vai precisar ter docker instalado na sua máquina para rodar o banco de dados PostgreSQL ou instalar diretamente na sua máquina.
-
-:warning: Lembre-se de configurar o arquivo .env
+:warning: Lembre-se de configurar o arquivo .env :warning:
 
 ```bash
 # Clone o repositório
@@ -62,13 +53,13 @@ git clone https://github.com/defauth98/books-api.gi books-api
 cd books-api
 
 # Instale as dependencias
-yarn
+npm i
 
 # Rode as migrations
-yarn migrate
+npm run migrate
 
 # Configure o seu api em /src/services/api.ts e rode o app
-yarn start
+make backend
 ```
 
 ### Autor
