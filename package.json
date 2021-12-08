@@ -13,7 +13,7 @@
     "drop": "ts-node-dev ./node_modules/typeorm/cli.js -c dev schema:drop",
     "pretest": "ts-node-dev ./node_modules/typeorm/cli.js -c test migration:run",
     "test": "NODE_ENV=test jest --watch",
-    "posttest": "ts-node-dev ./node_modules/typeorm/cli.js -c test schema:drop",
+    "posttest": "rm ./__tests__/database.sqlite",
     "precoverage": "ts-node-dev ./node_modules/typeorm/cli.js migration:run",
     "coverage": "jest --coverage",
     "postcoverage": "ts-node-dev ./node_modules/typeorm/cli.js schema:drop"
