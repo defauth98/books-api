@@ -17,7 +17,7 @@
     "precoverage": "ts-node-dev ./node_modules/typeorm/cli.js migration:run",
     "coverage": "jest --coverage",
     "postcoverage": "ts-node-dev ./node_modules/typeorm/cli.js schema:drop",
-    "test:watch": "NODE_ENV=test jest --watch",
+    "test:watch": "NODE_ENV=test jest --watch"
   },
   "license": "MIT",
   "devDependencies": {
