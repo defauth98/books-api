@@ -12,11 +12,12 @@
     "revert": "ts-node-dev ./node_modules/typeorm/cli.js -c dev migration:revert",
     "drop": "ts-node-dev ./node_modules/typeorm/cli.js -c dev schema:drop",
     "pretest": "ts-node-dev ./node_modules/typeorm/cli.js -c test migration:run",
-    "test": "NODE_ENV=test jest --watch",
+    "test": "NODE_ENV=test jest",
     "posttest": "rm ./__tests__/database.sqlite",
     "precoverage": "ts-node-dev ./node_modules/typeorm/cli.js migration:run",
     "coverage": "jest --coverage",
-    "postcoverage": "ts-node-dev ./node_modules/typeorm/cli.js schema:drop"
+    "postcoverage": "ts-node-dev ./node_modules/typeorm/cli.js schema:drop",
+    "test:watch": "NODE_ENV=test jest --watch",
   },
   "license": "MIT",
   "devDependencies": {

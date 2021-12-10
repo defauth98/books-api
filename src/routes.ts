@@ -6,8 +6,6 @@ import AuthController from './controllers/AuthController';
 import BooksController from './controllers/BooksController';
 import PublisherController from './controllers/PublisherController';
 
-// import Authentication from './middlewares/authentication';
-
 const upload = multer(multerConfig);
 
 const routes = express.Router();
